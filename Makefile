@@ -1,6 +1,7 @@
 gen-doc:
 	go install github.com/swaggo/swag/cmd/swag@latest
 	swag init -g api/core-handler.go 
+	swag fmt
 
 lint:
 	go fmt ./...

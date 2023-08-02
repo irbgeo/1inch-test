@@ -13,17 +13,17 @@ import (
 )
 
 // GetAmountOut
-// @Tags        requests
-// @Summary get amount out
-// @Description Return outputAmount that corresponding uniswap_v2 pool will return if you try to swap inputAmount of fromToken in poolID
-// @Param		fromToken		query	string 		true 	"from token address"	default(0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2)
-// @Param		inputAmount		query 	string 		true 	"amount for swapping"	default(1e18)
-// @Param		toToken 		query 	string 		true 	"to token address" 		default(0xdac17f958d2ee523a2206206994597c13d831ec7)
-// @Param		poolID			query 	string 		true	"pool address"			default(0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852)
-// @Success     200	{string}  	string	"amountOut"
-// @Failure 	500 {string} 	string	"error description"
-// @Failure 	400 {string} 	string	"error description"
-// @Router /get-amount-out [get]
+//	@Tags			requests
+//	@Summary		get amount out
+//	@Description	Return outputAmount that corresponding uniswap_v2 pool will return if you try to swap inputAmount of fromToken in poolID
+//	@Param			fromToken	query		string	true	"from token address"	default(0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2)
+//	@Param			inputAmount	query		string	true	"amount for swapping"	default(1e18)
+//	@Param			toToken		query		string	true	"to token address"		default(0xdac17f958d2ee523a2206206994597c13d831ec7)
+//	@Param			poolID		query		string	true	"pool address"			default(0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852)
+//	@Success		200			{string}	string	"amountOut"
+//	@Failure		500			{string}	string	"error description"
+//	@Failure		400			{string}	string	"error description"
+//	@Router			/get-amount-out [get]
 func (s *api) getAmountOut(w http.ResponseWriter, r *http.Request) {
 	in, err := parseGetAmountOutRequest(r)
 	if err != nil {
