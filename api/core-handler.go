@@ -12,7 +12,8 @@ import (
 	"1inch-test/models"
 )
 
-// GetAmountOut godoc
+// GetAmountOut
+// @Tags        requests
 // @Summary get amount out
 // @Description Return outputAmount that corresponding uniswap_v2 pool will return if you try to swap inputAmount of fromToken in poolID
 // @Param		fromToken		query	string 		true 	"from token address"	default(0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2)

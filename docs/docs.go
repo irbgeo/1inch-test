@@ -19,6 +19,9 @@ const docTemplate = `{
         "/get-amount-out": {
             "get": {
                 "description": "Return outputAmount that corresponding uniswap_v2 pool will return if you try to swap inputAmount of fromToken in poolID",
+                "tags": [
+                    "requests"
+                ],
                 "summary": "get amount out",
                 "parameters": [
                     {

@@ -9,13 +9,13 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	_ "1inch-test/docs"
 
 	"1inch-test/api"
 	"1inch-test/contarcts/multicall"
 	"1inch-test/contarcts/univ2"
 	"1inch-test/core"
 	"1inch-test/pool"
+	_ "1inch-test/docs"
 )
 
 var (

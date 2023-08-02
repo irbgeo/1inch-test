@@ -44,4 +44,6 @@ paths:
           schema:
             type: string
       summary: get amount out
+      tags:
+      - requests
 swagger: "2.0"
