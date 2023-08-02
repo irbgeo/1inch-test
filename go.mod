@@ -1,4 +1,4 @@
-module 1inch-test
+module github.com/irbgeo/1inch-test
 
 go 1.20
 

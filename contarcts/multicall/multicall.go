@@ -1,11 +1,12 @@
 package multicall
 
 import (
-	"1inch-test/models"
 	"context"
 	_ "embed"
 	"log"
 	"strings"
+
+	"github.com/irbgeo/1inch-test/models"
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -44,8 +45,6 @@ func NewContract(providerURL string) (*multicall, error) {
 
 	return m, nil
 }
-
-
 
 func (s *multicall) Multicall(ctx context.Context, call []models.Call) ([]models.CallResult, error) {
 	calldata, err := s.abi.Pack("multicall", call)

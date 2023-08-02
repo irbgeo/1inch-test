@@ -6,7 +6,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 
-	"1inch-test/models"
+	"github.com/irbgeo/1inch-test/models"
 )
 
 type core struct {

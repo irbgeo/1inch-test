@@ -5,9 +5,9 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/swaggo/http-swagger"
+	httpSwagger "github.com/swaggo/http-swagger"
 
-	"1inch-test/models"
+	"github.com/irbgeo/1inch-test/models"
 )
 
 type api struct {

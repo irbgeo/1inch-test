@@ -9,7 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/shopspring/decimal"
 
-	"1inch-test/models"
+	"github.com/irbgeo/1inch-test/models"
 )
 
 // GetAmountOut

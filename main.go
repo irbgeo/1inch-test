@@ -10,12 +10,12 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 
-	"1inch-test/api"
-	"1inch-test/contarcts/multicall"
-	"1inch-test/contarcts/univ2"
-	"1inch-test/core"
-	"1inch-test/pool"
-	_ "1inch-test/docs"
+	"github.com/irbgeo/1inch-test/api"
+	"github.com/irbgeo/1inch-test/contarcts/multicall"
+	"github.com/irbgeo/1inch-test/contarcts/univ2"
+	"github.com/irbgeo/1inch-test/core"
+	_ "github.com/irbgeo/1inch-test/docs"
+	"github.com/irbgeo/1inch-test/pool"
 )
 
 var (
