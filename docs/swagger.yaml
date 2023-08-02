@@ -3,27 +3,31 @@ info:
 paths:
   /get-amount-out:
     get:
-      description: Return outputAmount that corresponding uniswap_v2 pool  will return
-        if you try to swap inputAmount of  fromToken
+      description: Return outputAmount that corresponding uniswap_v2 pool will return
+        if you try to swap inputAmount of fromToken in poolID
       parameters:
-      - description: fromToken
+      - default: 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+        description: from token address
         in: query
-        name: 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+        name: fromToken
         required: true
         type: string
-      - description: amount for swapping
+      - default: "1e18"
+        description: amount for swapping
         in: query
-        name: "1000000000000000000"
+        name: inputAmount
         required: true
         type: string
-      - description: toToken
+      - default: 0xdac17f958d2ee523a2206206994597c13d831ec7
+        description: to token address
         in: query
-        name: 0xdac17f958d2ee523a2206206994597c13d831ec7
+        name: toToken
         required: true
         type: string
-      - description: poolID
+      - default: 0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852
+        description: pool address
         in: query
-        name: 0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852
+        name: poolID
         required: true
         type: string
       responses:
@@ -31,7 +35,7 @@ paths:
           description: amountOut
           schema:
             type: string
-        "404":
+        "400":
           description: error description
           schema:
             type: string
