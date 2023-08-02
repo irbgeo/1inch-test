@@ -38,12 +38,12 @@ func main() {
 		log.Fatal("init univ2 contract failed", err)
 	}
 
-	multicallContarct, err := multicall.NewContract(providerURL)
+	multicallContract, err := multicall.NewContract(providerURL)
 	if err != nil {
 		log.Fatal("init multicall contract failed", err)
 	}
 
-	poolProvider := pool.NewProvider(poolContract, multicallContarct)
+	poolProvider := pool.NewProvider(poolContract, multicallContract)
 
 	core := core.New(poolProvider)
 
