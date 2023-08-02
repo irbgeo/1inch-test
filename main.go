@@ -25,7 +25,7 @@ var (
 func main() {
 	err := godotenv.Load(".env")
 	if err != nil {
-		log.Fatalf("Error loading environment variables file")
+		log.Fatal("Error loading environment variables file")
 	}
 
 	providerURL := os.Getenv("PROVIDER_URL")
