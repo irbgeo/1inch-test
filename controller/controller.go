@@ -1,27 +1,32 @@
-package core
+package controller
 
 import (
 	"context"
 	"fmt"
 
 	"github.com/ethereum/go-ethereum/common"
-
-	"github.com/irbgeo/1inch-test/models"
+	"github.com/shopspring/decimal"
 )
 
-type core struct {
+type controller struct {
 	poolProvider poolProvider
 }
 
 type poolProvider interface {
-	GetByID(ctx context.Context, poolID common.Address) (models.IPool, error)
+	GetByID(ctx context.Context, poolID common.Address) (IPool, error)
 }
 
-func New(poolProvider poolProvider) *core {
-	return &core{poolProvider: poolProvider}
+type IPool interface {
+	GetToken0() common.Address
+	GetToken1() common.Address
+	GetAmountOut(fromToken common.Address, inputAmount decimal.Decimal) (decimal.Decimal, error)
 }
 
-func (s *core) GetAmountOut(ctx context.Context, in models.In) (*models.Out, error) {
+func New(poolProvider poolProvider) *controller {
+	return &controller{poolProvider: poolProvider}
+}
+
+func (s *controller) GetAmountOut(ctx context.Context, in In) (*Out, error) {
 	pool, err := s.poolProvider.GetByID(ctx, in.PoolID)
 	if err != nil {
 		return nil, fmt.Errorf("failed get pool %s: %w", in.PoolID, err)
@@ -33,7 +38,7 @@ func (s *core) GetAmountOut(ctx context.Context, in models.In) (*models.Out, err
 			in.PoolID, in.FromToken, in.ToToken, pool.GetToken0(), pool.GetToken1())
 	}
 
-	out := new(models.Out)
+	out := new(Out)
 
 	out.AmountOut, err = pool.GetAmountOut(in.FromToken, in.InputAmount)
 	if err != nil {

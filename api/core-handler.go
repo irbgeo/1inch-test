@@ -9,7 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/shopspring/decimal"
 
-	"github.com/irbgeo/1inch-test/models"
+	"github.com/irbgeo/1inch-test/controller"
 )
 
 // GetAmountOut
@@ -32,7 +32,7 @@ func (s *api) getAmountOut(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	out, err := s.core.GetAmountOut(r.Context(), in)
+	out, err := s.controller.GetAmountOut(r.Context(), in)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error())) //nolint: errcheck
@@ -43,47 +43,47 @@ func (s *api) getAmountOut(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(out.AmountOut.String())) //nolint: errcheck
 }
 
-func parseGetAmountOutRequest(r *http.Request) (models.In, error) {
+func parseGetAmountOutRequest(r *http.Request) (controller.In, error) {
 	query := r.URL.Query()
 
 	poolID := query["poolID"]
 	if len(poolID) != 1 {
-		return models.In{}, errPoolIDNumber
+		return controller.In{}, errPoolIDNumber
 	}
 
 	if !common.IsHexAddress(poolID[0]) {
-		return models.In{}, fmt.Errorf("poolID %s is not a hex address", poolID[0])
+		return controller.In{}, fmt.Errorf("poolID %s is not a hex address", poolID[0])
 	}
 
 	fromToken := query["fromToken"]
 	if len(fromToken) != 1 {
-		return models.In{}, errFromTokenNumber
+		return controller.In{}, errFromTokenNumber
 	}
 
 	if !common.IsHexAddress(fromToken[0]) {
-		return models.In{}, fmt.Errorf("fromToken %s is not a hex address", fromToken[0])
+		return controller.In{}, fmt.Errorf("fromToken %s is not a hex address", fromToken[0])
 	}
 
 	inputAmount := query["inputAmount"]
 	if len(inputAmount) != 1 {
-		return models.In{}, errInputAmountNumber
+		return controller.In{}, errInputAmountNumber
 	}
 
 	inputAmountValue, err := parseDecimal(inputAmount[0])
 	if err != nil {
-		return models.In{}, errParseInputAmount
+		return controller.In{}, errParseInputAmount
 	}
 
 	toToken := query["toToken"]
 	if len(toToken) != 1 {
-		return models.In{}, errToTokenNumber
+		return controller.In{}, errToTokenNumber
 	}
 
 	if !common.IsHexAddress(toToken[0]) {
-		return models.In{}, fmt.Errorf("toToken %s is not a hex address", toToken[0])
+		return controller.In{}, fmt.Errorf("toToken %s is not a hex address", toToken[0])
 	}
 
-	return models.In{
+	return controller.In{
 		PoolID:      common.HexToAddress(poolID[0]),
 		FromToken:   common.HexToAddress(fromToken[0]),
 		InputAmount: inputAmountValue,

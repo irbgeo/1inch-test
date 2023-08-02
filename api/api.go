@@ -7,21 +7,21 @@ import (
 	"github.com/gorilla/mux"
 	httpSwagger "github.com/swaggo/http-swagger"
 
-	"github.com/irbgeo/1inch-test/models"
+	"github.com/irbgeo/1inch-test/controller"
 )
 
 type api struct {
-	core core
+	controller iController
 }
 
-type core interface {
-	GetAmountOut(ctx context.Context, in models.In) (*models.Out, error)
+type iController interface {
+	GetAmountOut(ctx context.Context, in controller.In) (*controller.Out, error)
 }
 
 func New(
-	core core,
+	controller iController,
 ) *api {
-	return &api{core: core}
+	return &api{controller: controller}
 }
 
 func (s *api) Route(r *mux.Router) {

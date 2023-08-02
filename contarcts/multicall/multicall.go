@@ -6,7 +6,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/irbgeo/1inch-test/models"
+	"github.com/irbgeo/1inch-test/pool"
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -46,7 +46,7 @@ func NewContract(providerURL string) (*multicall, error) {
 	return m, nil
 }
 
-func (s *multicall) Multicall(ctx context.Context, call []models.Call) ([]models.CallResult, error) {
+func (s *multicall) Multicall(ctx context.Context, call []pool.Call) ([]pool.CallResult, error) {
 	calldata, err := s.abi.Pack("multicall", call)
 	if err != nil {
 		return nil, err
@@ -66,10 +66,10 @@ func (s *multicall) Multicall(ctx context.Context, call []models.Call) ([]models
 
 	err = s.abi.UnpackIntoInterface(&returnData, "multicall", data)
 
-	out := make([]models.CallResult, 0, len(returnData.ReturnData))
+	out := make([]pool.CallResult, 0, len(returnData.ReturnData))
 
 	for _, r := range returnData.ReturnData {
-		out = append(out, models.CallResult{
+		out = append(out, pool.CallResult{
 			Success:    r.Success,
 			ReturnData: r.ReturnData,
 		})

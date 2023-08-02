@@ -7,7 +7,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/shopspring/decimal"
 
-	"github.com/irbgeo/1inch-test/models"
+	"github.com/irbgeo/1inch-test/controller"
 )
 
 var (
@@ -26,7 +26,7 @@ type poolContract interface {
 }
 
 type multicallContract interface {
-	Multicall(ctx context.Context, call []models.Call) ([]models.CallResult, error)
+	Multicall(ctx context.Context, call []Call) ([]CallResult, error)
 }
 
 func NewProvider(
@@ -39,22 +39,22 @@ func NewProvider(
 	}
 }
 
-func (s *poolProvider) GetByID(ctx context.Context, poolID common.Address) (models.IPool, error) {
-	call := make([]models.Call, 0, 3)
+func (s *poolProvider) GetByID(ctx context.Context, poolID common.Address) (controller.IPool, error) {
+	call := make([]Call, 0, 3)
 
-	call = append(call, models.Call{
+	call = append(call, Call{
 		Target:   poolID,
 		CallData: s.poolContract.Token0CallData(),
 		GasLimit: gasLimit,
 	})
 
-	call = append(call, models.Call{
+	call = append(call, Call{
 		Target:   poolID,
 		CallData: s.poolContract.Token1CallData(),
 		GasLimit: gasLimit,
 	})
 
-	call = append(call, models.Call{
+	call = append(call, Call{
 		Target:   poolID,
 		CallData: s.poolContract.GetReservesCallData(),
 		GasLimit: gasLimit,

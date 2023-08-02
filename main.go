@@ -13,7 +13,7 @@ import (
 	"github.com/irbgeo/1inch-test/api"
 	"github.com/irbgeo/1inch-test/contarcts/multicall"
 	"github.com/irbgeo/1inch-test/contarcts/univ2"
-	"github.com/irbgeo/1inch-test/core"
+	"github.com/irbgeo/1inch-test/controller"
 	_ "github.com/irbgeo/1inch-test/docs"
 	"github.com/irbgeo/1inch-test/pool"
 )
@@ -45,11 +45,11 @@ func main() {
 
 	poolProvider := pool.NewProvider(poolContract, multicallContract)
 
-	core := core.New(poolProvider)
+	ctrl := controller.New(poolProvider)
 
 	r := mux.NewRouter()
 
-	api := api.New(core)
+	api := api.New(ctrl)
 
 	api.Route(r)
 
