@@ -3,6 +3,8 @@ package api
 import (
 	"fmt"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/shopspring/decimal"
@@ -11,7 +13,7 @@ import (
 )
 
 // GetAmountOut godoc
-// @Summary get amount out 
+// @Summary get amount out
 // @Description Return outputAmount that corresponding uniswap_v2 pool  will return if you try to swap inputAmount of  fromToken
 // @Param	0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2	query	string 		true 	"fromToken"
 // @Param	1000000000000000000							query 	string 		true 	"amount for swapping"
@@ -19,7 +21,7 @@ import (
 // @Param	0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852  query 	string 		true	"poolID"
 // @Success     200	{string}  	string	"amountOut"
 // @Failure 	500 {string} 	string	"error description"
-// @Failure 	404 {string} 	string	"error description"
+// @Failure 	400 {string} 	string	"error description"
 // @Router /get-amount-out [get]
 func (s *api) getAmountOut(w http.ResponseWriter, r *http.Request) {
 	in, err := parseGetAmountOutRequest(r)
@@ -66,7 +68,7 @@ func parseGetAmountOutRequest(r *http.Request) (models.In, error) {
 		return models.In{}, errInputAmountNumber
 	}
 
-	inputAmountValue, err := decimal.NewFromString(inputAmount[0])
+	inputAmountValue, err := parseDecimal(inputAmount[0])
 	if err != nil {
 		return models.In{}, errParseInputAmount
 	}
@@ -86,4 +88,25 @@ func parseGetAmountOutRequest(r *http.Request) (models.In, error) {
 		InputAmount: inputAmountValue,
 		ToToken:     common.HexToAddress(toToken[0]),
 	}, nil
+}
+
+func parseDecimal(src string) (decimal.Decimal, error) {
+	src = strings.ToLower(src)
+	decimalParts := strings.Split(src, "e")
+
+	if len(decimalParts) == 2 {
+		value, err := strconv.ParseInt(decimalParts[0], 10, 64)
+		if err != nil {
+			return decimal.Decimal{}, err
+		}
+
+		exp, err := strconv.ParseInt(decimalParts[1], 10, 32)
+		if err != nil {
+			return decimal.Decimal{}, err
+		}
+
+		return decimal.New(value, int32(exp)), nil
+	}
+
+	return decimal.NewFromString(src)
 }
