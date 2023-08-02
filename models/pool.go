@@ -8,5 +8,5 @@ import (
 type IPool interface {
 	GetToken0() common.Address
 	GetToken1() common.Address
-	GetAmountOut(tokenIn common.Address, amountIn decimal.Decimal) (decimal.Decimal, error)
+	GetAmountOut(fromToken common.Address, inputAmount decimal.Decimal) (decimal.Decimal, error)
 }

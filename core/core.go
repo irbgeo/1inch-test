@@ -27,15 +27,15 @@ func (s *core) GetAmountOut(ctx context.Context, in models.In) (*models.Out, err
 		return nil, fmt.Errorf("failed get pool %s: %w", in.PoolID, err)
 	}
 
-	if (pool.GetToken0() != in.TokenIn && pool.GetToken1() != in.TokenOut) &&
-		(pool.GetToken0() != in.TokenOut && pool.GetToken1() != in.TokenIn) {
+	if (pool.GetToken0() != in.FromToken && pool.GetToken1() != in.ToToken) &&
+		(pool.GetToken0() != in.ToToken && pool.GetToken1() != in.FromToken) {
 		return nil, fmt.Errorf("pool %s does not correspond to the exchanged tokens want %s/%s have %s/%s",
-			in.PoolID, in.TokenIn, in.TokenOut, pool.GetToken0(), pool.GetToken1())
+			in.PoolID, in.FromToken, in.ToToken, pool.GetToken0(), pool.GetToken1())
 	}
 
 	out := new(models.Out)
 
-	out.AmountOut, err = pool.GetAmountOut(in.TokenIn, in.AmountIn)
+	out.AmountOut, err = pool.GetAmountOut(in.FromToken, in.InputAmount)
 	if err != nil {
 		return nil, fmt.Errorf("get amount out: %w", err)
 	}

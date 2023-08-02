@@ -25,14 +25,14 @@ func (s *pool) GetToken1() common.Address {
 	return s.token1
 }
 
-func (s *pool) GetAmountOut(tokenIn common.Address, amountIn decimal.Decimal) (decimal.Decimal, error) {
-	reserveIn, reserveOut := s.getReserves(tokenIn)
+func (s *pool) GetAmountOut(fromToken common.Address, inputAmount decimal.Decimal) (decimal.Decimal, error) {
+	reserveIn, reserveOut := s.getReserves(fromToken)
 
-	return getAmountOut(amountIn, reserveIn, reserveOut)
+	return getAmountOut(inputAmount, reserveIn, reserveOut)
 }
 
-func (s *pool) getReserves(tokenIn common.Address) (decimal.Decimal, decimal.Decimal) {
-	if tokenIn == s.token0 {
+func (s *pool) getReserves(fromToken common.Address) (decimal.Decimal, decimal.Decimal) {
+	if fromToken == s.token0 {
 		return s.reserve0, s.reserve1
 	}
 	return s.reserve1, s.reserve0
@@ -41,8 +41,8 @@ func (s *pool) getReserves(tokenIn common.Address) (decimal.Decimal, decimal.Dec
 // getAmountOut given an input amount of an asset and pair reserves
 // returns the maximum output amount of the other asset
 // https://github.com/Uniswap/v2-periphery/blob/master/contracts/libraries/UniswapV2Library.sol#L43
-func getAmountOut(amountIn, reserveIn, reserveOut decimal.Decimal) (decimal.Decimal, error) {
-	if amountIn.Cmp(decimal.Zero) <= 0 {
+func getAmountOut(inputAmount, reserveIn, reserveOut decimal.Decimal) (decimal.Decimal, error) {
+	if inputAmount.Cmp(decimal.Zero) <= 0 {
 		return decimal.Decimal{}, errInsufficientInputAmount
 	}
 
@@ -50,9 +50,9 @@ func getAmountOut(amountIn, reserveIn, reserveOut decimal.Decimal) (decimal.Deci
 		return decimal.Decimal{}, errInsufficientLiquidity
 	}
 
-	amountInWithFee := amountIn.Mul(decimal.New(997, 0))
-	numerator := amountInWithFee.Mul(reserveOut)
-	denominator := reserveIn.Mul(dec1k).Add(amountInWithFee)
+	inputAmountWithFee := inputAmount.Mul(decimal.New(997, 0))
+	numerator := inputAmountWithFee.Mul(reserveOut)
+	denominator := reserveIn.Mul(dec1k).Add(inputAmountWithFee)
 
 	return numerator.Div(denominator).RoundDown(0), nil
 }

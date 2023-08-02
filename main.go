@@ -7,13 +7,15 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
+	_ "1inch-test/docs"
+
 	"1inch-test/api"
 	"1inch-test/contarcts/multicall"
 	"1inch-test/contarcts/univ2"
 	"1inch-test/core"
 	"1inch-test/pool"
-
-	"github.com/gorilla/mux"
 )
 
 var (
@@ -21,9 +23,14 @@ var (
 )
 
 func main() {
-	prividerURL, ok := os.LookupEnv("PROVIDER_URL")
-	if !ok {
-		log.Fatal("INFURA_URL not found")
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalf("Error loading environment variables file")
+	}
+
+	providerURL := os.Getenv("PROVIDER_URL")
+	if providerURL == "" {
+		log.Fatal("PROVIDER_URL not found")
 	}
 
 	poolContract, err := univ2.NewContract()
@@ -31,7 +38,7 @@ func main() {
 		log.Fatal("init univ2 contract failed", err)
 	}
 
-	multicallContarct, err := multicall.NewContract(prividerURL)
+	multicallContarct, err := multicall.NewContract(providerURL)
 	if err != nil {
 		log.Fatal("init multicall contract failed", err)
 	}

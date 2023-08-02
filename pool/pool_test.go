@@ -8,7 +8,7 @@ import (
 )
 
 type testCase struct {
-	amountIn          decimal.Decimal
+	inputAmount       decimal.Decimal
 	reserveIn         decimal.Decimal
 	reserveOut        decimal.Decimal
 	expectedAmountOut decimal.Decimal
@@ -22,7 +22,7 @@ var (
 	testCases = []testCase{
 		// https://github.com/Uniswap/v2-periphery/blob/master/test/UniswapV2Router02.spec.ts#L54
 		{
-			amountIn:          decimal.New(2, 0),
+			inputAmount:       decimal.New(2, 0),
 			reserveIn:         decimal.New(1, 2),
 			reserveOut:        decimal.New(1, 2),
 			expectedAmountOut: decimal.New(1, 0),
@@ -34,17 +34,17 @@ var (
 			expectedError: errInsufficientInputAmount,
 		},
 		{
-			amountIn:      decimal.New(2, 0),
+			inputAmount:   decimal.New(2, 0),
 			reserveIn:     decimal.New(1, 2),
 			expectedError: errInsufficientLiquidity,
 		},
 		{
-			amountIn:      decimal.New(2, 0),
+			inputAmount:   decimal.New(2, 0),
 			reserveOut:    decimal.New(1, 2),
 			expectedError: errInsufficientLiquidity,
 		},
 		{
-			amountIn:          decimal.New(1, 18),
+			inputAmount:       decimal.New(1, 18),
 			reserveIn:         reserveInTest,
 			reserveOut:        reserveOut,
 			expectedAmountOut: decimal.New(1847100305, 0),
@@ -55,7 +55,7 @@ var (
 
 func TestGetAmountOut(t *testing.T) {
 	for _, testCase := range testCases {
-		actualAmountOut, actualError := getAmountOut(testCase.amountIn, testCase.reserveIn, testCase.reserveOut)
+		actualAmountOut, actualError := getAmountOut(testCase.inputAmount, testCase.reserveIn, testCase.reserveOut)
 		require.Equal(t, testCase.expectedError, actualError)
 		require.Equal(t, testCase.expectedAmountOut, actualAmountOut)
 	}

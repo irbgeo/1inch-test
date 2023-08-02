@@ -10,6 +10,17 @@ import (
 	"1inch-test/models"
 )
 
+// GetAmountOut godoc
+// @Summary get amount out 
+// @Description Return outputAmount that corresponding uniswap_v2 pool  will return if you try to swap inputAmount of  fromToken
+// @Param	0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2	query	string 		true 	"fromToken"
+// @Param	1000000000000000000							query 	string 		true 	"amount for swapping"
+// @Param	0xdac17f958d2ee523a2206206994597c13d831ec7 	query 	string 		true 	"toToken"
+// @Param	0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852  query 	string 		true	"poolID"
+// @Success     200	{string}  	string	"amountOut"
+// @Failure 	500 {string} 	string	"error description"
+// @Failure 	404 {string} 	string	"error description"
+// @Router /get-amount-out [get]
 func (s *api) getAmountOut(w http.ResponseWriter, r *http.Request) {
 	in, err := parseGetAmountOutRequest(r)
 	if err != nil {
@@ -41,38 +52,38 @@ func parseGetAmountOutRequest(r *http.Request) (models.In, error) {
 		return models.In{}, fmt.Errorf("poolID %s is not a hex address", poolID[0])
 	}
 
-	tokenIn := query["tokenIn"]
-	if len(tokenIn) != 1 {
-		return models.In{}, errTokenInNumber
+	fromToken := query["fromToken"]
+	if len(fromToken) != 1 {
+		return models.In{}, errFromTokenNumber
 	}
 
-	if !common.IsHexAddress(tokenIn[0]) {
-		return models.In{}, fmt.Errorf("tokenIn %s is not a hex address", tokenIn[0])
+	if !common.IsHexAddress(fromToken[0]) {
+		return models.In{}, fmt.Errorf("fromToken %s is not a hex address", fromToken[0])
 	}
 
-	amountIn := query["amountIn"]
-	if len(amountIn) != 1 {
-		return models.In{}, errAmountInNumber
+	inputAmount := query["inputAmount"]
+	if len(inputAmount) != 1 {
+		return models.In{}, errInputAmountNumber
 	}
 
-	amountInValue, err := decimal.NewFromString(amountIn[0])
+	inputAmountValue, err := decimal.NewFromString(inputAmount[0])
 	if err != nil {
-		return models.In{}, errParseAmountIn
+		return models.In{}, errParseInputAmount
 	}
 
-	tokenOut := query["tokenOut"]
-	if len(tokenOut) != 1 {
-		return models.In{}, errTokenOutNumber
+	toToken := query["toToken"]
+	if len(toToken) != 1 {
+		return models.In{}, errToTokenNumber
 	}
 
-	if !common.IsHexAddress(tokenOut[0]) {
-		return models.In{}, fmt.Errorf("tokenOut %s is not a hex address", tokenOut[0])
+	if !common.IsHexAddress(toToken[0]) {
+		return models.In{}, fmt.Errorf("toToken %s is not a hex address", toToken[0])
 	}
 
 	return models.In{
-		PoolID:   common.HexToAddress(poolID[0]),
-		TokenIn:  common.HexToAddress(tokenIn[0]),
-		AmountIn: amountInValue,
-		TokenOut: common.HexToAddress(tokenOut[0]),
+		PoolID:      common.HexToAddress(poolID[0]),
+		FromToken:   common.HexToAddress(fromToken[0]),
+		InputAmount: inputAmountValue,
+		ToToken:     common.HexToAddress(toToken[0]),
 	}, nil
 }

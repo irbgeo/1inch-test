@@ -6,10 +6,10 @@ import (
 )
 
 type In struct {
-	PoolID   common.Address
-	TokenIn  common.Address
-	TokenOut common.Address
-	AmountIn decimal.Decimal
+	PoolID      common.Address
+	FromToken   common.Address
+	ToToken     common.Address
+	InputAmount decimal.Decimal
 }
 
 type Out struct {
