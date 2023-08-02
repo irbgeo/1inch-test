@@ -18,6 +18,9 @@ You need to calculate outputAmount
 1.  Create `.env` with env variable `PROVIDER_URL` and set blockchain provider url with api key (example in `.env.example`)
 2.  `go run main.go`
 
+# TODO: 
+
 ## Documentation
 
 For documentation run app and go to `http://localhost:8080/swagger/index.html`
+
